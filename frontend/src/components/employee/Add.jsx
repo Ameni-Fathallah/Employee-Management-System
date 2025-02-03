@@ -1,38 +1,46 @@
 import React, { useState,useEffect } from 'react';
 import { fetchDepartments } from '../../utils/EmployeeHelper.jsx';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const Add = () => {
     const [departments, setDepartments] = useState([]);
 
+    //we create formData to store the data in object 
     const[formData,setFormData]=useState({});
-
+    const navigate=useNavigate(); 
+    
+    //fetch data from DB
     useEffect(()=>{
         const getDepartments = async () => {
-            const departmentsData=await fetchDepartments();
+            const departmentsData=await fetchDepartments();//this function imlementes int the EmployeHelper 
             setDepartments(departmentsData);
         };
         getDepartments();
     },[])
 
+
+    //add fields to the form with the function handlechange
     const handleChange=(e)=>{
         const {name,value,files}=e.target;
-        if(name==="image"){
+        if(name==="image"){//if the name is an object
             setFormData((prevData)=>({...prevData,[name]:files[0]}))
         }else{
             setFormData((prevData)=>({...prevData,[name]:value}))
-
         }
     }
 
-      const handleSubmit=async()=>{
+
+    //after we fill the form , we calll the submit function in the top of the form 
+    //Nb : with the submit  we have to pass our data to ther serverside 
+      const handleSubmit=async(e)=>{
         e.preventDefault();
-        const formDataObj=new FormData()
+        const formDataObj=new FormData()//we should use formdataobj because e wanna passa file 
 
         Object.keys(formData).forEach((key)=>{
-          formDataObj.append(key,formData[key])
+          formDataObj.append(key,formData[key])//example : key :email/name/... formadata[key] : value
         })
 
         try{
@@ -48,13 +56,21 @@ const Add = () => {
             navigate("/admin-dashboard/employees")
           }
           console.log('yesss')
-        }catch(error){
-          if(error.response && !UNSAFE_ErrorResponseImpl.response.data.success){
-            alert(error.resonse.data.error);
+        }catch (error) {
+          // Handle errors
+          if (error.response) {
+            // Server responded with an error (e.g., 400 Bad Request)
+            alert(error.response.data.error || 'An error occurred');
+          } else if (error.request) {
+            // The request was made but no response was received
+            alert('No response from the server. Please try again.');
+          } else {
+            // Something else went wrong
+            alert('An unexpected error occurred. Please try again.');
           }
+          console.error('Error:', error);
         }
-
-      }
+      };
 
   return (
     <div className='max-w-4xl mx-auto mt-10 bg-teal-50 p-10 rounded-lg shadow-2xl'>

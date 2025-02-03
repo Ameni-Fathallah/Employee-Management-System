@@ -17,10 +17,6 @@ const EditDepartment = () => {
         setDepartment({ ...department, [name]: value }); // Update department state with new value
     };
 
-
-
-
-
     
     // Function to handle form submission
     const handleSubmit = async (e) => {

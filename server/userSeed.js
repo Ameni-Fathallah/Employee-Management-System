@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import User from "./db/models/User.js";
 import connectToDataBase from "./db/db.js";
-
 dotenv.config();
 
 const seedUsers = async () => {
@@ -18,7 +17,7 @@ const seedUsers = async () => {
     }
 
     // Hash the password before saving the user
-    const passwordHash = await bcrypt.hash("adminpassword"); // Use the actual password you want
+    const passwordHash = await bcrypt.hash("adminpassword", 10); // Add salt rounds
     const admin = new User({
       name: "Admin",
       email: "admin@gmail.com",

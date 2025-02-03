@@ -1,7 +1,5 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom"
-
-
+import { useNavigate } from "react-router-dom";
 
 //we create this page because from the database we can charge only the data , no the columns 
 //define all the columns 
@@ -25,12 +23,9 @@ export const DepartmentButtons=({_id,onDepartmentDelete})=>{
     const Navigate=useNavigate();
 
     const handleDelete=async(id)=>{
-        const confirm=window.confirm("Do you want to delete ?")
+        const confirm=window.confirm("Do you want to delete this department?")
         if(confirm){
-        try {
-           
-                
-            // Make GET request to retrieve department details
+        try {           
             //api is for dataa access
             const response = await axios.delete(`http://localhost:5000/api/department/${id}`, {
                 headers: {
@@ -49,6 +44,7 @@ export const DepartmentButtons=({_id,onDepartmentDelete})=>{
             }
         }
     }}
+
     return(
         <div className="flex space-x-3">
             <button className="px-3 py-1 bg-teal-600 text-white rounded"

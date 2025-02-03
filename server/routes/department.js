@@ -6,10 +6,9 @@ const router = express.Router();
 
 //call the api department and return the data from serverside 
 router.get('/', authMiddleware, getDepartments);
-
-
 // Apply authMiddleware to verify user, then call addDepartment controller function
 router.post('/add', authMiddleware, addDepartment);
+
 router.get('/:id', authMiddleware, getDepartment);
 router.put('/:id', authMiddleware, updateDepartment);
 router.delete('/:id', authMiddleware, deleteDepartment);

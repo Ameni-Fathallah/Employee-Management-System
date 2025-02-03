@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const employeeSchema=new Schema({
-    userId:{type:Schema.Types.ObjectId,ref:"User",required:true},
+    userId:{type:Schema.Types.ObjectId,ref:"User",required:true},//ref = user ::: we will create for every employee a userr account 
     employeeId:{type:String,required:true,unique:true},
     dob:{type:Date},
     gender:{type:String},
@@ -15,3 +15,4 @@ const employeeSchema=new Schema({
 
 const Employee=mongoose.model('Employee',employeeSchema);
 export default Employee;
+///NB : the employee has connection with a user and and a department 

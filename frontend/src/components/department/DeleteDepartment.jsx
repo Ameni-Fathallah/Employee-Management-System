@@ -9,14 +9,12 @@ const DeleteDepartment = () => {
 
     // Function to fetch departments
     const fetchDepartments = async () => {
-        e.preventDefault(); // Prevent default form behavior
-
         setLoading(true); // Set loading to true while fetching data
         try {
             // Make GET request to retrieve department list
             const response = await axios.get(`http://localhost:5000/api/department`, {
                 headers: {
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`, // Attach auth token
+                    Authorization: `Bearer ${localStorage.getItem('token')}`, // Attach auth token
                 },
             });
             if (response.data.success) {
@@ -24,6 +22,7 @@ const DeleteDepartment = () => {
             }
         } catch (error) {
             console.error("Failed to fetch departments:", error);
+            alert('Failed to fetch departments. Please try again.'); // Notify user of error
         } finally {
             setLoading(false); // Set loading to false once data is fetched
         }
@@ -36,17 +35,17 @@ const DeleteDepartment = () => {
                 // Make DELETE request to delete department
                 const response = await axios.delete(`http://localhost:5000/api/department/${id}`, {
                     headers: {
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`, // Attach auth token
+                        Authorization: `Bearer ${localStorage.getItem('token')}`, // Attach auth token
                     },
                 });
                 if (response.data.success) {
-                    // Fetch updated department list
-                    alert('Department deleted successfully.');
-                    fetchDepartments(); // Re-fetch departments after deletion
+                    // Update the departments state to remove the deleted department
+                    setDepartments(prevDepartments => prevDepartments.filter(dept => dept._id !== id));
+                    console.log('Department deleted successfully.');
                 }
             } catch (error) {
                 console.error("Failed to delete department:", error);
-                alert('Failed to delete department. Please try again.');
+                alert('Failed to delete department. Please try again.'); // Notify user of error
             }
         }
     };
@@ -54,7 +53,7 @@ const DeleteDepartment = () => {
     // Fetch departments on component mount
     useEffect(() => {
         fetchDepartments(); // Fetch departments when the component loads
-    }, []);
+    }, []); // Empty dependency array ensures this runs only once
 
     return (
         <div className='max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md'>
@@ -67,7 +66,7 @@ const DeleteDepartment = () => {
                         <ul>
                             {departments.map((department) => (
                                 <li
-                                    key={department.id}
+                                    key={department._id} // Use _id instead of id
                                     className='flex justify-between items-center p-4 border-b'
                                 >
                                     <div>
@@ -75,8 +74,8 @@ const DeleteDepartment = () => {
                                         <p className='text-gray-600'>{department.description}</p>
                                     </div>
                                     <button
-                                        onClick={() => handleDelete(department.id)}
-                                        className='bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                        onClick={() => handleDelete(department._id)} // Use _id instead of id
+                                        className='bg-red-600 hover:bg-red-200 text-white font-bold py-2 px-4 rounded'
                                     >
                                         Delete
                                     </button>

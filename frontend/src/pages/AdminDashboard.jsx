@@ -10,9 +10,8 @@ const AdminDashboard = () => {
     <div className='flex'>
       <AdminSidebar/>
       <div className='flex-1 ml-64 bg-gray-100 h-screen'>
-        <Navbar/>
+      <Navbar/>
         <Outlet/>{/* used to fetch child components of our react dom */}
-
       </div>
     </div>
   )

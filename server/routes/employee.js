@@ -1,18 +1,15 @@
 import express from 'express';
 import authMiddleware from '../middleware/authMiddleware.js'; // Make sure the path is correct
-import { addEmployee } from '../controllers/employeeController.js';
+import { addEmployee ,upload,getEmployees,getEmployee,updateEmployee,fetchEmployeesById} from '../controllers/employeeController.js';
 
 const router = express.Router();
 
-//call the api department and return the data from serverside 
-// router.get('/', authMiddleware, getDepartments);
-
-
-// Apply authMiddleware to verify user, then call addDepartment controller function
-router.post('/add', authMiddleware, addEmployee);
-// router.get('/:id', authMiddleware, getDepartment);
-// router.put('/:id', authMiddleware, updateDepartment);
-// router.delete('/:id', authMiddleware, deleteDepartment);
+//call the api employee and return the data from serverside 
+router.get('/', authMiddleware, getEmployees);
+router.post('/add', authMiddleware,upload.single('image'), addEmployee);
+router.get('/:id', authMiddleware, getEmployee);
+router.put('/:id', authMiddleware, updateEmployee);
+router.get('/department/:id', authMiddleware, fetchEmployeesById);
 
 
 export default router; // departmentRouter
